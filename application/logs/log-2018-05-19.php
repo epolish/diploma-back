@@ -37,3 +37,5 @@ ERROR - 2018-05-19 16:13:15 --> Severity: Warning --> mysqli::real_connect(): (H
 ERROR - 2018-05-19 16:13:15 --> Unable to connect to the database
 ERROR - 2018-05-19 16:13:15 --> Severity: Warning --> Cannot modify header information - headers already sent by (output started at D:\Soft\OpenServer\domains\diploma-admin\system\core\Exceptions.php:271) D:\Soft\OpenServer\domains\diploma-admin\system\core\Common.php 570
 ERROR - 2018-05-19 16:38:57 --> Severity: Warning --> Cannot modify header information - headers already sent by (output started at D:\Soft\OpenServer\domains\diploma-admin\application\models\Expert_system.php:140) D:\Soft\OpenServer\domains\diploma-admin\system\helpers\url_helper.php 564
+ERROR - 2018-05-19 17:59:34 --> 404 Page Not Found: Faviconico/index
+ERROR - 2018-05-19 18:04:25 --> 404 Page Not Found: Faviconico/index
