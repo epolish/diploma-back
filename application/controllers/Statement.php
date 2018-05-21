@@ -40,7 +40,10 @@ class Statement extends MY_Controller {
                 $this->session->set_flashdata('error_message', $this->upload->display_errors());
             } else {
                 try {
-                    $this->expert_system->import($this->upload->data()['full_path']);
+                    $this->expert_system->import(
+                        $this->upload->data()['full_path'],
+                        array_key_exists('append_mode', $_POST)
+                    );
                     $this->session->set_flashdata('success_message', 'Imported successfully');
                 } catch (\Exception $ex) {
                     $this->session->set_flashdata('error_message', $ex->getMessage());

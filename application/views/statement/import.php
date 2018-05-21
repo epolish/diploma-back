@@ -65,6 +65,10 @@
                     <label for="import_file">Upload csv file</label>
                     <input id="import_file" class="form-control" name="import_file" type="file" accept=".csv">
                 </div>
+                <div class="form-group">
+                    <label for="append_mode">Append mode</label>
+                    <input id="append_mode" name="append_mode" type="checkbox">
+                </div>
                 <button type="submit" class="btn btn-default pull-right">Import</button>
             </form>
         </div>

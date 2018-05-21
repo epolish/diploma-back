@@ -134,11 +134,14 @@ class Expert_system extends CI_Model
         return $response;
     }
 
-    public function import($url)
+    public function import($url, $appendMode = false)
     {
         $ch = curl_init();
         $data_string = $this->encoder->encode([
             'url' => 'file:///' . urlencode($url),
+            'options' => [
+                'append_mode' => $appendMode
+            ],
         ], JsonEncoder::FORMAT);
 
         $this->prepare_request($ch, 'import');
