@@ -64,45 +64,49 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="page-header">
-				<h1>Create statement:</h1>
+                <?php if ($statements): ?>
+				    <h1>Statements:</h1>
+                <?php else: ?>
+                    <h1>There are no statements</h1>
+                <?php endif; ?>
 			</div>
 		</div>
 	</div>
     <div class="row">
-        <div class="col-lg-12">
-            <form class="form" action="<?= site_url('statement/create'); ?>" method="post">
-                <div class="form-group">
-                    <label for="statement_value">Statement value</label>
-                    <input id="statement_value" class="form-control" name="statement_value" value="<?= $statement; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="parent_statement_value">Statement parent value</label>
-                    <select id="parent_statement_value" class="form-control" name="parent_statement_value" size="3">
-                        <option></option>
-                        <?php foreach ($statements as $statement) : ?>
-                            <option <?= $statement == $parent_statement ? 'selected' : ''; ?>>
-                                <?php echo $statement; ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="parent_relationship_value">Parent relationship value</label>
-                    <input id="parent_relationship_value" class="form-control" name="parent_relationship_value" value="<?= $parent_relationship; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="parent_relationship_support_level_value">Parent relationship support level value</label>
-                    <input id="parent_relationship_support_level_value" class="form-control" name="parent_relationship_support_level_value" value="<?= $parent_relationship_support_level_value; ?>" type="number">
-                </div>
-                <button type="submit" class="btn btn-default pull-right">Create</button>
-            </form>
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <?php
+                function getTreeHtml($arr) {
+                    $list = '<ul>';
+
+                    foreach ($arr as $key => $value) {
+                        if (!empty($value)) {
+                            $statementUrl = site_url('statement/get/' . $key);
+
+                            $list .= '<li>';
+                            $list .=    "<a href=\"$statementUrl\">";
+                            $list .=        $key . getTreeHtml($value);
+                            $list .=    '</a>';
+                            $list .= '</li>';
+                        } else {
+                            $statementUrl = site_url('statement/get/' . $key);
+
+                            $list .= '<li>';
+                            $list .=    "<a href=\"$statementUrl\">";
+                            $list .=        $key;
+                            $list .=    '</a>';
+                            $list .= '</li>';
+                        }
+                    }
+
+                    $list .= '</ul>';
+
+                    return $list;
+                }
+
+                echo getTreeHtml($statements);
+            ?>
         </div>
+        <div class="col-lg-4"></div>
     </div>
 </div>
-<script>
-    $(document).ready(function($) {
-        $(".clickable-row").click(function() {
-            window.location = $(this).data("href");
-        });
-    });
-</script>

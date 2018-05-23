@@ -56,7 +56,7 @@ class Expert_system extends CI_Model
         return $this->get_response($ch);
     }
 
-    public function get_statement($value)
+    public function get_statement($value = 'root')
     {
         $ch = curl_init();
 
@@ -65,13 +65,18 @@ class Expert_system extends CI_Model
         return $this->get_response($ch);
     }
 
-    public function create_statement($statement_value, $parent_statement_value, $parent_relationship_value)
-    {
+    public function create_statement(
+        $statement_value,
+        $parent_statement_value,
+        $parent_relationship_value,
+        $parent_relationship_support_level_value
+    ) {
         $ch = curl_init();
         $data_string = $this->encoder->encode([
             'statement_value' => $statement_value,
             'parent_statement_value' => $parent_statement_value,
-            'parent_relationship_value' => $parent_relationship_value
+            'parent_relationship_value' => $parent_relationship_value,
+            'parent_relationship_support_level_value' => (int)$parent_relationship_support_level_value
         ], JsonEncoder::FORMAT);
 
         $this->prepare_request($ch);
@@ -88,14 +93,20 @@ class Expert_system extends CI_Model
         return $response;
     }
 
-    public function update_statement($statement_value, $new_statement_value, $new_parent_statement_value, $new_parent_relationship_value)
-    {
+    public function update_statement(
+        $statement_value,
+        $new_statement_value,
+        $new_parent_statement_value,
+        $new_parent_relationship_value,
+        $new_parent_relationship_support_level_value
+    ) {
         $ch = curl_init();
         $data_string = $this->encoder->encode([
             'statement_value' => $statement_value,
             'new_statement_value' => $new_statement_value,
             'new_parent_statement_value' => $new_parent_statement_value,
-            'new_parent_relationship_value' => $new_parent_relationship_value
+            'new_parent_relationship_value' => $new_parent_relationship_value,
+            'new_parent_relationship_support_level_value' => (int)$new_parent_relationship_support_level_value
         ], JsonEncoder::FORMAT);
 
         $this->prepare_request($ch);
@@ -167,5 +178,47 @@ class Expert_system extends CI_Model
         if (array_key_exists('error', $response)) {
             throw new Exception($response['error']);
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function get_statement_tree_array()
+    {
+        $ch = curl_init();
+
+        $this->prepare_request($ch);
+
+        curl_setopt($ch, CURLOPT_URL, $this->api_url . '?withParents');
+
+        $statements = $this->get_response($ch);
+
+        return $this->buildTree($statements);
+    }
+
+    /**
+     * @param array $statements
+     * @param null $parent_statement_value
+     * @return array
+     */
+    public function buildTree(array &$statements, $parent_statement_value = null)
+    {
+        $branch = [];
+
+        foreach ($statements as $statement) {
+            if ($statement['parent_statement_value'] == $parent_statement_value) {
+                $child_statements = $this->buildTree($statements, $statement['statement_value']);
+
+                $statement['child_statements'] = $child_statements ?: [];
+
+                $branch[$statement['statement_value']] = $statement['child_statements'];
+
+                unset($branch[$statement['statement_value']]['statement_value']);
+                unset($branch[$statement['statement_value']]['parent_statement_value']);
+            }
+
+        }
+
+        return $branch;
     }
 }

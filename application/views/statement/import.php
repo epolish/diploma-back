@@ -17,6 +17,9 @@
                     <a href="<?= site_url('statement/'); ?>">Statements list</a>
                 </li>
                 <li>
+                    <a href="<?= site_url('statement/tree'); ?>">Statements tree</a>
+                </li>
+                <li>
                     <a href="<?= site_url('statement/create'); ?>">Create statement</a>
                 </li>
                 <li class="dropdown">
@@ -58,6 +61,13 @@
             </div>
         </div>
     <?php endif; ?>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h1>Bulk import</h1>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <form class="form" action="<?= site_url('statement/import'); ?>" method="post" enctype="multipart/form-data">

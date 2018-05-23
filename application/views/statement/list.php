@@ -17,6 +17,9 @@
                     <a href="<?= site_url('statement/'); ?>">Statements list</a>
                 </li>
                 <li>
+                    <a href="<?= site_url('statement/tree'); ?>">Statements tree</a>
+                </li>
+                <li>
                     <a href="<?= site_url('statement/create'); ?>">Create statement</a>
                 </li>
 				<li class="dropdown">
@@ -89,6 +92,10 @@
 </div>
 <script>
     $(document).ready(function($) {
+        var capitalizeFirstLetter = function (string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        };
+
         $(".clickable-row").click(function() {
             window.location = $(this).data("href");
         });
@@ -97,7 +104,12 @@
 
             if (searchValue) {
                 $('[data-search]').hide();
-                $('[data-search*="' + searchValue + '"]').show();
+                $(
+                    '[data-search*="' + searchValue + '"], ' +
+                    '[data-search*="' + searchValue.toLowerCase() + '"], ' +
+                    '[data-search*="' + searchValue.toUpperCase() + '"], ' +
+                    '[data-search*="' + capitalizeFirstLetter(searchValue.toLowerCase()) + '"]'
+                ).show();
             } else {
                 $('[data-search]').show();
             }

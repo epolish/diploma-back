@@ -17,6 +17,9 @@
                     <a href="<?= site_url('statement/'); ?>">Statements list</a>
                 </li>
                 <li>
+                    <a href="<?= site_url('statement/tree'); ?>">Statements tree</a>
+                </li>
+                <li>
                     <a href="<?= site_url('statement/create'); ?>">Create statement</a>
                 </li>
 				<li class="dropdown">
@@ -61,14 +64,13 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="page-header">
-				<h1>Statement: <?php echo $statement; ?></h1>
-                <a href="<?= site_url('statement/remove/' . $statement); ?>" class="pull-right"> Delete statement</a>
-                <br/>
+                <?php $general_statement = $statement; ?>
+				<h1>Statement: <?php echo $general_statement; ?></h1>
 			</div>
 		</div>
 	</div>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <form class="form" action="<?= site_url('statement/update'); ?>" method="post">
                 <input type="hidden" name="statement_value" value="<?php echo $statement; ?>">
                 <div class="form-group">
@@ -90,35 +92,47 @@
                     <label for="new_parent_relationship_value">New parent relationship value</label>
                     <input id="new_parent_relationship_value" class="form-control" name="new_parent_relationship_value" value="<?= $parent_relationship; ?>">
                 </div>
+                <div class="form-group">
+                    <label for="new_parent_relationship_support_level_value">New parent relationship support level value</label>
+                    <input id="new_parent_relationship_support_level_value" class="form-control" name="new_parent_relationship_support_level_value" value="<?= $parent_relationship_support_level_value; ?>" type="number">
+                </div>
                 <button type="submit" class="btn btn-default pull-right">Update</button>
+                <a href="<?= site_url('statement/remove/' . $general_statement); ?>" class="btn btn-danger">Delete</a>
             </form>
         </div>
-    </div>
-    <?php if ($child_statements): ?>
-    <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
+            <?php if ($parent_statement): ?>
+                <h2>Parent statement: </h2>
+                <table class="table table-striped table-condensed table-bordered table-hover">
+                    <tbody>
+                    <tr class="clickable-row" data-href='<?= site_url('statement/get/' . $parent_statement); ?>'>
+                        <td>
+                            <?php echo $parent_statement; ?> :
+                            <?php echo $parent_relationship; ?> :
+                            <?php echo $parent_relationship_support_level_value; ?>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+            <?php if ($child_statements): ?>
             <h2>Child statements: </h2>
             <table class="table table-striped table-condensed table-bordered table-hover">
                 <tbody>
-                    <?php foreach ($child_statements as $child_statement) : ?>
-                        <tr class="clickable-row" data-href='<?= site_url('statement/get/' . $child_statement['statement_value']); ?>'>
-                            <td>
-                                <?php echo $child_statement['statement_value']; ?> :
-                                <?php echo $child_statement['relationship_value']; ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
+                <?php foreach ($child_statements as $child_statement) : ?>
+                    <tr class="clickable-row" data-href='<?= site_url('statement/get/' . $child_statement['statement_value']); ?>'>
+                        <td>
+                            <?php echo $child_statement['statement_value']; ?> :
+                            <?php echo $child_statement['relationship_value']; ?> :
+                            <?php echo $child_statement['relationship_support_level_value']; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
                 </tbody>
             </table>
+            <?php endif; ?>
         </div>
     </div>
-    <? else: ?>
-        <div class="row">
-            <div class="col-lg-12">
-                <h2>There are no child statements</h2>
-            </div>
-        </div>
-    <?php endif; ?>
 </div>
 <script>
     $(document).ready(function($) {

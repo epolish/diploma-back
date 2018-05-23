@@ -47,10 +47,6 @@ div.container.main.sign-in {
     margin-top: 10%;
 }
 
-div.container.main.dashboard {
-    margin-top: 5%;
-}
-
 .clickable-row {
     cursor: pointer;
 }
