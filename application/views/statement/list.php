@@ -67,6 +67,10 @@
                     <h1>There are no statements</h1>
                 <?php endif; ?>
 			</div>
+            <div class="form-group">
+                <label for="search">Search</label>
+                <input id="search" class="form-control" name="search">
+            </div>
 		</div>
 	</div>
     <div class="row">
@@ -74,7 +78,7 @@
             <table class="table table-striped table-condensed table-bordered table-hover">
                 <tbody>
                     <?php foreach ($statements as $statement) : ?>
-                        <tr class="clickable-row" data-href='<?= site_url('statement/get/' . $statement); ?>'>
+                        <tr class="clickable-row" data-href='<?= site_url('statement/get/' . $statement); ?>' data-search="<?php echo $statement; ?>">
                             <td><?php echo $statement; ?></td>
                         </tr>
                     <?php endforeach; ?>
@@ -87,6 +91,16 @@
     $(document).ready(function($) {
         $(".clickable-row").click(function() {
             window.location = $(this).data("href");
+        });
+        $("#search").keyup(function () {
+            var searchValue = $(this).val();
+
+            if (searchValue) {
+                $('[data-search]').hide();
+                $('[data-search*="' + searchValue + '"]').show();
+            } else {
+                $('[data-search]').show();
+            }
         });
     });
 </script>
