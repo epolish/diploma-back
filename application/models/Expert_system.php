@@ -11,8 +11,7 @@ class Expert_system extends CI_Model
     {
         parent::__construct();
 
-        $this->api_url = 'https://secret-inlet-64004.herokuapp.com/';
-        $this->api_url = 'http://diploma/';
+        $this->api_url = getenv('API_URL');
         $this->encoder = new JsonEncoder();
     }
 
