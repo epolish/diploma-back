@@ -72,6 +72,15 @@
         <div class="col-lg-12">
             <form class="form" action="<?= site_url('statement/import'); ?>" method="post" enctype="multipart/form-data">
                 <div class="form-group">
+                    <label for="import_url">Upload csv via url</label>
+                    <input id="import_url" class="form-control" name="import_url" type="url" placeholder="http(s)://">
+                    <p>
+                        <br>Samples: <br>
+                        https://raw.githubusercontent.com/epolish/diploma-seeds/master/real_first_import/import.csv <br>
+                        https://raw.githubusercontent.com/epolish/diploma-seeds/master/second_real_import/import.csv
+                    </p>
+                </div>
+                <div class="form-group">
                     <label for="import_file">Upload csv file</label>
                     <input id="import_file" class="form-control" name="import_file" type="file" accept=".csv">
                 </div>

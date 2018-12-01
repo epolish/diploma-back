@@ -144,11 +144,11 @@ class Expert_system extends CI_Model
         return $response;
     }
 
-    public function import($url, $appendMode = false)
+    public function import($url, $appendMode = false, $is_external_url = false)
     {
         $ch = curl_init();
         $data_string = $this->encoder->encode([
-            'url' => 'file:///' . urlencode($url),
+            'url' => $is_external_url ? $url : 'file:///' . urlencode($url),
             'options' => [
                 'append_mode' => $appendMode
             ],

@@ -36,7 +36,18 @@ class Statement extends MY_Controller {
     public function import()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!$this->upload->do_upload('import_file')) {
+            if (array_key_exists('import_url', $_POST) && $_POST['import_url']) {
+                try {
+                    $this->expert_system->import(
+                        $_POST['import_url'],
+                        array_key_exists('append_mode', $_POST),
+                        true
+                    );
+                    $this->session->set_flashdata('success_message', 'Imported successfully');
+                } catch (\Exception $ex) {
+                    $this->session->set_flashdata('error_message', $ex->getMessage());
+                }
+            } elseif (!$this->upload->do_upload('import_file')) {
                 $this->session->set_flashdata('error_message', $this->upload->display_errors());
             } else {
                 try {
